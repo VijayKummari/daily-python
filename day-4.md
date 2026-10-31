@@ -1194,6 +1194,4 @@ The main takeaway is that building a maintainable backend application requires m
 
 *Async, Middleware & Modular FastAPI*
 
-### Assignment Submission
 
-[Submit Day 4 Assignment](https://forms.gle/UDtjdsHGjrW7qyi87)
