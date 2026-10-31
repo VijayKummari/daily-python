@@ -1,648 +1,52 @@
-# Day 2 - Python Problem Solving & Core Data Structures 🐍
+# Day 2 – Python Problem Solving & Core Data Structures
 
-Hi everyone! 👋
+**Placement Preparation Series | Python Developer**
 
-This repository contains my notes, coding practice, interview questions, and assignments from **Day 2 of the Placement Preparation Series**.
+## Overview
 
-In this session, I focused on Python lists, dictionaries, sets, problem-solving techniques, and time and space complexity. I also practiced some coding problems and learned how to handle edge cases and debug common mistakes.
+This assignment focuses on solving Python coding problems using appropriate data structures and algorithms.
 
-I'm sharing these notes here for revision and practice.
+The main objective is to write efficient, readable, and reusable Python code while understanding time complexity, space complexity, edge cases, and debugging techniques.
 
-## 📚 Topics Covered
+### Topics Covered
 
-* Python Lists and their operations
-* Dictionaries and Sets
-* Frequency Counting and Duplicate Detection
+* Python Problem-Solving Approach
+* Lists, Sets, and Dictionaries
+* Duplicate Removal
 * Two-Pointer Technique
-* Sliding-Window Technique
+* Sliding Window Algorithm
+* Debugging and Edge Cases
 * Time and Space Complexity
-* Coding Problems and Debugging
-* Interview Questions and Answers
-* Scenario-Based Questions
-* Day 2 Assignments
 
 ---
 
-## 1. Python Lists
+# Task A – Remove Duplicates While Preserving Order
 
-### Q1. What is the difference between `append()` and `extend()`?
+### Problem Statement
 
-**Answer:**
+Write a Python function that removes duplicate elements from a list while preserving the original order of their first occurrence.
 
-`append()` adds one object to the end of a list, whereas `extend()` adds each element from an iterable to the list.
+**Condition:** Do not use a one-line shortcut.
 
-```python
-numbers = [1, 2]
+### Approach
 
-numbers.append([3, 4])
-print(numbers)
-# [1, 2, [3, 4]]
+I used a combination of a set and a list to solve this problem.
 
-numbers = [1, 2]
-numbers.extend([3, 4])
-print(numbers)
-# [1, 2, 3, 4]
-```
+* A set named `seen` keeps track of elements that have already appeared.
+* A list named `result` stores unique elements in their original order.
+* I iterate through the input list and check whether each element already exists in the set.
+* If it is not present, I add it to both the set and the result list.
 
-### Q2. What is the difference between `sort()` and `sorted()`?
-
-**Answer:**
-
-* `sort()` sorts a list in place and returns `None`.
-* `sorted()` returns a new sorted list without changing the original iterable.
-
-```python
-numbers = [3, 1, 2]
-
-numbers.sort()
-print(numbers)
-# [1, 2, 3]
-
-numbers = [3, 1, 2]
-result = sorted(numbers)
-
-print(result)
-# [1, 2, 3]
-
-print(numbers)
-# [3, 1, 2]
-```
-
-### Q3. What is the difference between `remove()` and `pop()`?
-
-**Answer:**
-
-* `remove(value)` removes the first occurrence of a specified value.
-* `pop(index)` removes and returns the element at the specified index. Without an index, it removes and returns the last element.
-
-```python
-numbers = [10, 20, 30, 20]
-
-numbers.remove(20)
-print(numbers)
-# [10, 30, 20]
-
-value = numbers.pop()
-print(value)
-# 20
-
-print(numbers)
-# [10, 30]
-```
-
-### Q4. What is a shallow copy in Python?
-
-**Answer:**
-
-A shallow copy creates a new outer object, but nested objects are still shared between the original and copied objects.
-
-```python
-original = [[1, 2], [3, 4]]
-copied = original[:]
-
-copied[0][0] = 100
-
-print(original)
-# [[100, 2], [3, 4]]
-```
-
-Here, changing a nested list through the copy also affects the original because both refer to the same nested object.
-
-### Q5. What happens if we assign the result of `list.sort()` to a variable?
-
-**Answer:**
-
-The variable receives `None` because `sort()` modifies the list in place and does not return the sorted list.
-
-```python
-scores = [71, 95, 84]
-
-result = scores.sort()
-
-print(result)
-# None
-
-print(scores)
-# [71, 84, 95]
-```
-
-If we need a new sorted list, we should use `sorted(scores)`.
-
----
-
-## 2. Dictionaries and Sets
-
-### Q6. Why do we use a set for duplicate detection?
-
-**Answer:**
-
-A set stores unique hashable elements and supports average-case O(1) membership checking. It helps us detect duplicates without repeatedly searching through a list.
-
-```python
-numbers = [10, 20, 30, 20]
-seen = set()
-
-for number in numbers:
-    if number in seen:
-        print("Duplicate found:", number)
-        break
-
-    seen.add(number)
-
-# Output:
-# Duplicate found: 20
-```
-
-### Q7. What is the difference between a list, a set, and a dictionary?
-
-**Answer:**
-
-| Feature    | List                | Set                                 | Dictionary                |
-| ---------- | ------------------- | ----------------------------------- | ------------------------- |
-| Stores     | Elements            | Unique elements                     | Key-value pairs           |
-| Duplicates | Allowed             | Duplicate elements are not retained | Keys must be unique       |
-| Order      | Preserves order     | No guaranteed iteration order       | Preserves insertion order |
-| Membership | O(n)                | O(1) average                        | O(1) average for keys     |
-| Common use | Ordered collections | Uniqueness and membership           | Lookup and counting       |
-
-**Example:**
-
-```python
-numbers = [1, 2, 2, 3]
-unique_numbers = {1, 2, 3}
-student = {"name": "Kiran", "age": 22}
-```
-
-### Q8. What does `dict.get(key, default)` do?
-
-**Answer:**
-
-The `get()` method returns the value associated with a key. If the key does not exist, it returns the specified default value instead of raising a `KeyError`.
-
-```python
-student = {"name": "Kiran"}
-
-print(student.get("name", "Unknown"))
-# Kiran
-
-print(student.get("age", 0))
-# 0
-```
-
-### Q9. Can we use a list as a dictionary key?
-
-**Answer:**
-
-No. Lists are mutable and unhashable, so they cannot be used directly as dictionary keys or set elements.
-
-Strings, integers, and tuples containing only hashable elements are common examples of valid keys.
-
-```python
-# Invalid:
-# data = {[1, 2]: "numbers"}
-
-# Valid:
-data = {(1, 2): "numbers"}
-
-print(data[(1, 2)])
-# numbers
-```
-
-### Q10. Why can repeated list membership checks be expensive?
-
-**Answer:**
-
-Searching an unsorted list takes O(n) time in the worst case. If we perform membership checks repeatedly while processing n elements, the overall time can become O(n²).
-
-Using a set can reduce the expected total processing time to O(n), at the cost of additional memory.
-
----
-
-## 3. Two-Pointer Technique
-
-### Q11. What is the two-pointer technique?
-
-**Answer:**
-
-The two-pointer technique uses two positions to process a sequence efficiently.
-
-Depending on the problem, the pointers can start at opposite ends or move through the sequence in different ways.
-
-It is useful for problems such as palindrome checking and finding a pair sum in a sorted list.
-
-### Problem 1: Check Whether a String Is a Palindrome
-
-**Question:** Write a Python function to check whether a string reads the same forward and backward, ignoring spaces and letter case.
-
-**Solution:**
-
-```python
-def is_palindrome(text):
-    cleaned = text.lower().replace(" ", "")
-
-    left = 0
-    right = len(cleaned) - 1
-
-    while left < right:
-        if cleaned[left] != cleaned[right]:
-            return False
-
-        left += 1
-        right -= 1
-
-    return True
-
-
-print(is_palindrome("Never odd or even"))
-# True
-
-print(is_palindrome("Python"))
-# False
-```
-
-**Explanation:**
-
-1. Convert the string to lowercase.
-2. Remove spaces.
-3. Place one pointer at the beginning and another at the end.
-4. Compare the characters.
-5. If they differ, return `False`.
-6. Otherwise, move both pointers toward the center.
-
-**Complexity:**
-
-* Time: O(n)
-* Auxiliary space: O(n) because a cleaned string is created.
-
-### Problem 2: Find a Pair With a Target Sum
-
-**Question:** Given a sorted list and a target value, determine whether two elements add up to the target.
-
-**Example:**
-
-Input: `[1, 3, 4, 6, 8]`
-
-Target: `10`
-
-Output: `True`
-
-**Solution:**
-
-```python
-def has_pair_sum_sorted(numbers, target):
-    left = 0
-    right = len(numbers) - 1
-
-    while left < right:
-        total = numbers[left] + numbers[right]
-
-        if total == target:
-            return True
-
-        if total < target:
-            left += 1
-        else:
-            right -= 1
-
-    return False
-
-
-print(has_pair_sum_sorted([1, 3, 4, 6, 8], 10))
-# True
-```
-
-**Explanation:**
-
-* If the sum equals the target, return `True`.
-* If the sum is smaller, move the left pointer forward.
-* If the sum is greater, move the right pointer backward.
-* If no pair is found, return `False`.
-
-**Complexity:**
-
-* Time: O(n)
-* Auxiliary space: O(1)
-
-**Note:** This approach requires sorted input.
-
----
-
-## 4. Sliding-Window Technique
-
-### Q12. What is the sliding-window technique?
-
-**Answer:**
-
-The sliding-window technique processes a contiguous section of an array or string.
-
-Instead of recalculating the entire section every time it moves, we update the current result by removing the outgoing element and adding the incoming element.
-
-This can improve an O(n × k) solution to O(n) for fixed-size window-sum problems.
-
-### Problem 3: Find the Maximum Sum of a Fixed-Size Window
-
-**Question:** Given a list of numbers and a window size `k`, find the maximum sum of any `k` consecutive elements.
-
-**Example:**
-
-Input: `[2, 1, 5, 1, 3, 2]`
-
-Window size: `3`
-
-Possible window sums:
-
-* `[2, 1, 5]` → 8
-* `[1, 5, 1]` → 7
-* `[5, 1, 3]` → 9
-* `[1, 3, 2]` → 6
-
-Output: `9`
-
-**Solution:**
-
-```python
-def max_sum_window(numbers, k):
-    if k <= 0 or k > len(numbers):
-        return None
-
-    window_sum = sum(numbers[:k])
-    best = window_sum
-
-    for right in range(k, len(numbers)):
-        window_sum += numbers[right] - numbers[right - k]
-        best = max(best, window_sum)
-
-    return best
-
-
-print(max_sum_window([2, 1, 5, 1, 3, 2], 3))
-# 9
-
-print(max_sum_window([1, 2, 3], 1))
-# 3
-
-print(max_sum_window([1, 2, 3], 4))
-# None
-```
-
-**Explanation:**
-
-1. Validate the window size.
-2. Calculate the sum of the first window.
-3. Subtract the element leaving the window.
-4. Add the new element entering the window.
-5. Keep track of the maximum sum.
-
-**Complexity:**
-
-* Time: O(n)
-* Auxiliary space: O(1), excluding the temporary slice used to calculate the first window.
-
----
-
-## 5. Time and Space Complexity
-
-### Q13. What is time complexity?
-
-**Answer:**
-
-Time complexity describes how the amount of work performed by an algorithm grows as the input size increases.
-
-Common examples:
-
-| Complexity | Meaning           | Example                              |
-| ---------- | ----------------- | ------------------------------------ |
-| O(1)       | Constant time     | Accessing a list element by index    |
-| O(n)       | Linear time       | Traversing a list once               |
-| O(n²)      | Quadratic time    | Two nested loops over the same input |
-| O(n log n) | Linearithmic time | Typical comparison-based sorting     |
-
-### Q14. What is space complexity?
-
-**Answer:**
-
-Space complexity describes how memory requirements grow with the input size.
-
-For example, removing duplicates while preserving order requires a set and a result list. Both may grow with the input size, so the auxiliary space complexity is O(n).
-
-### Q15. What is the difference between time and auxiliary space complexity?
-
-**Answer:**
-
-Time complexity describes the growth in computational work, while auxiliary space complexity describes the additional memory used by the algorithm.
-
-For example, a two-pointer pair-sum solution on a sorted list takes O(n) time and O(1) auxiliary space.
-
-### Quick Complexity Reference
-
-| Operation or Technique     | Typical Complexity           |
-| -------------------------- | ---------------------------- |
-| List indexing              | O(1)                         |
-| Searching an unsorted list | O(n)                         |
-| List membership            | O(n)                         |
-| Set membership             | O(1) average                 |
-| Dictionary key lookup      | O(1) average                 |
-| Sorting a list             | O(n log n)                   |
-| Single traversal           | O(n)                         |
-| Nested full traversal      | O(n²)                        |
-| Two pointers               | O(n) for common linear scans |
-| Fixed-size sliding window  | O(n)                         |
-
----
-
-## 6. Scenario-Based Interview Questions
-
-### Scenario 1: Duplicate Registrations
-
-**Question:**
-
-A service receives thousands of registration IDs and must identify repeated IDs without comparing each ID against every previously received ID. What approach would you use?
-
-**Answer:**
-
-I would use a set called `seen` to store IDs that have already appeared.
-
-For each new ID:
-
-1. Check whether it exists in `seen`.
-2. If it exists, flag the ID as a duplicate.
-3. Otherwise, add it to the set.
-
-This takes O(n) expected time and O(n) additional space.
-
-If an ID appears for the third time, it will still be detected as a duplicate. Whether to report every repeated occurrence or each duplicated ID only once depends on the requirement.
-
-### Scenario 2: Preserve First-Seen Order
-
-**Question:**
-
-A log contains event codes such as `A, B, A, C, B`. The output must contain each code once in the order it first appeared. Why is converting the list directly into a set not the right approach?
-
-**Answer:**
-
-A set removes duplicates, but its iteration order is not a contract for preserving the original sequence.
-
-I would use both a set and a list:
-
-* The set checks whether an element has appeared before.
-* The list stores unique elements in their original first-seen order.
-
-The expected time complexity is O(n), and the auxiliary space complexity is O(n).
-
-### Scenario 3: Incorrect Sorting Result
-
-**Question:**
-
-A developer writes:
-
-```python
-scores = [71, 95, 84]
-result = scores.sort()
-
-print(result)
-```
-
-Why does the program print `None`?
-
-**Answer:**
-
-The `sort()` method changes the original list in place and returns `None`.
-
-Two correct approaches are:
-
-```python
-scores = [71, 95, 84]
-
-scores.sort()
-print(scores)
-# [71, 84, 95]
-```
-
-Or:
-
-```python
-scores = [71, 95, 84]
-
-result = sorted(scores)
-
-print(result)
-# [71, 84, 95]
-
-print(scores)
-# [71, 95, 84]
-```
-
-The first approach modifies the original list. The second creates a new sorted list.
-
-### Scenario 4: Maximum Usage Over Three Hours
-
-**Question:**
-
-A dashboard receives hourly usage values and must find the maximum total across any three consecutive hours. How can a sliding window help?
-
-**Answer:**
-
-First, I would calculate the sum of the first three values.
-
-For every next position, I would subtract the value leaving the window and add the new value entering it. I would update the maximum after each movement.
-
-This avoids recalculating every three-element sum from scratch.
-
-The time complexity is O(n), and the auxiliary space complexity is O(1).
-
-I would also validate that `k` is positive and no greater than the number of available elements.
-
-### Scenario 5: Empty API Input
-
-**Question:**
-
-An API receives a list of item prices and calculates their average. What should happen if the list is empty?
-
-**Answer:**
-
-The API should validate the input before dividing by the number of elements.
-
-The expected behavior should be defined in the API contract. For example, the endpoint could return a validation error for an empty list.
-
-It should not silently return a misleading average or hide the problem with a broad exception handler.
-
-### Scenario 6: Slow Membership Checks
-
-**Question:**
-
-A program checks each incoming username against a large list of previously processed usernames. Why might the program become slow, and how can we improve it?
-
-**Answer:**
-
-List membership can take O(n) time for each check. Repeating this operation for many usernames can lead to O(n²) total time.
-
-I would use a set to store previously processed usernames. Set membership takes O(1) time on average, so processing n usernames takes O(n) expected time, with O(n) additional memory.
-
----
-
-## 7. Debugging Practice
-
-### Problem: Incorrect "Not Found" Message
-
-**Question:**
-
-The following code prints `"Not found"` for every element that does not match the target.
-
-```python
-numbers = [4, 8, 12]
-target = 7
-
-for number in numbers:
-    if number == target:
-        print("Found")
-    else:
-        print("Not found")
-```
-
-Why is the output incorrect?
-
-**Answer:**
-
-The `else` block runs for every individual nonmatching element. The program does not wait until the entire list has been checked.
-
-A better solution is to use a `for/else` loop.
-
-```python
-numbers = [4, 8, 12]
-target = 7
-
-for number in numbers:
-    if number == target:
-        print("Found")
-        break
-else:
-    print("Not found")
-```
-
-**Output:**
-
-```text
-Not found
-```
-
-The `else` block runs only if the loop finishes without encountering a `break`.
-
-If the target is found, the program prints `"Found"` and stops searching.
-
----
-
-## 8. Additional Coding Practice
-
-### Problem 4: Remove Duplicates While Preserving Order
-
-**Question:** Write a function that removes duplicate elements without changing the order of their first occurrence.
+### Python Code
 
 ```python
 def unique_in_order(items):
+
     seen = set()
     result = []
 
     for item in items:
+
         if item not in seen:
             seen.add(item)
             result.append(item)
@@ -650,150 +54,501 @@ def unique_in_order(items):
     return result
 
 
-print(unique_in_order([]))
-# []
-
-print(unique_in_order([5]))
-# [5]
-
-print(unique_in_order([2, 2, 2]))
-# [2]
+# Test Cases
 
 print(unique_in_order([3, 1, 3, 2, 1]))
-# [3, 1, 2]
+print(unique_in_order([]))
+print(unique_in_order([5]))
+print(unique_in_order([2, 2, 2]))
+print(unique_in_order([10, 20, 30, 10, 40, 20]))
+print(unique_in_order(["apple", "banana", "apple", "orange"]))
 ```
 
-**Explanation:**
+### Expected Output
 
-The set helps identify previously encountered elements, while the list preserves their first-seen order.
+```text
+[3, 1, 2]
+[]
+[5]
+[2]
+[10, 20, 30, 40]
+['apple', 'banana', 'orange']
+```
 
-**Complexity:**
+### Complexity Analysis
 
-* Time: O(n) expected
-* Auxiliary space: O(n)
+* **Time Complexity:** O(n) expected, because each element is visited once and set membership is O(1) on average.
+* **Space Complexity:** O(n), because the set and result list store unique elements.
 
-### Problem 5: Handle Invalid Window Sizes
+**Conclusion:** Using a set for membership checking and a list for maintaining order makes this solution efficient and readable.
 
-**Question:** What should a maximum-window-sum function do when `k` is zero, negative, or larger than the input list?
+Note: This implementation assumes all elements are hashable.
 
-**Answer:**
+---
 
-The function should validate `k` before calculating the initial window sum.
+# Task B – Maximum Sum of a Contiguous Window
 
-For this example, I return `None` for an invalid window size:
+### Problem Statement
+
+Write a Python function that returns the maximum sum of any contiguous subarray of size `k`.
+
+The function should also validate invalid values of `k`.
+
+### Approach – Sliding Window Technique
+
+Instead of calculating the sum of every possible window separately, I used the sliding window technique.
+
+Steps:
+
+1. Check whether `k` is valid.
+2. Calculate the sum of the first `k` elements.
+3. Store this sum as the initial maximum.
+4. Move the window one position at a time.
+5. Subtract the element leaving the window.
+6. Add the new element entering the window.
+7. Update the maximum sum whenever a larger sum is found.
+
+### Python Code
 
 ```python
 def max_sum_window(numbers, k):
+
+    # Validate window size
+    if not isinstance(k, int) or isinstance(k, bool):
+        return None
+
     if k <= 0 or k > len(numbers):
         return None
 
+    # Calculate the first window sum
     window_sum = sum(numbers[:k])
-    best = window_sum
 
+    max_sum = window_sum
+
+    # Slide the window
     for right in range(k, len(numbers)):
-        window_sum += numbers[right] - numbers[right - k]
-        best = max(best, window_sum)
 
-    return best
+        window_sum += numbers[right] - numbers[right - k]
+
+        max_sum = max(max_sum, window_sum)
+
+    return max_sum
+
+
+# Test Cases
+
+print(max_sum_window([2, 1, 5, 1, 3, 2], 3))
+print(max_sum_window([1, 2, 3, 4, 5], 2))
+print(max_sum_window([5, 5, 5, 5], 2))
+print(max_sum_window([-2, -1, -5, -3], 2))
+print(max_sum_window([10], 1))
+print(max_sum_window([], 1))
+print(max_sum_window([1, 2, 3], 0))
+print(max_sum_window([1, 2, 3], 5))
 ```
 
-Returning `None` is one possible design choice. An API or application could instead raise a `ValueError`, depending on its requirements.
+### Expected Output
+
+```text
+9
+9
+10
+-3
+10
+None
+None
+None
+```
+
+### Example Explanation
+
+Input:
+
+```python
+numbers = [2, 1, 5, 1, 3, 2]
+k = 3
+```
+
+Possible windows:
+
+| Window    | Sum |
+| --------- | --: |
+| [2, 1, 5] |   8 |
+| [1, 5, 1] |   7 |
+| [5, 1, 3] |   9 |
+| [1, 3, 2] |   6 |
+
+Maximum sum = **9**
+
+### Complexity Analysis
+
+* **Time Complexity:** O(n), because the initial window is calculated once and the remaining elements are processed in a single traversal.
+* **Space Complexity:** O(1) auxiliary space, excluding the input.
+
+### Edge Cases Tested
+
+* Empty input list.
+* Window size equal to 1.
+* Window size equal to the list length.
+* Window size greater than the list length.
+* Window size equal to zero.
+* Negative numbers.
+* Repeated elements.
+
+**Conclusion:** Sliding Window avoids recalculating the sum of every window and improves the solution from O(n × k) to O(n).
 
 ---
 
-## 9. Day 2 Assignments
+# Task C – Debugging Challenge
 
-These are the assignments I need to practice and complete.
+### Problem Statement
 
-### Task A — Remove Duplicates
+Consider the following code:
 
-Write a function that removes duplicates while preserving first-seen order.
+```python
+numbers = [4, 8, 12]
+target = 7
 
-Requirements:
+for number in numbers:
 
-* Do not use a one-line shortcut.
-* Include at least five test cases.
-* Explain the approach and complexity.
+    if number == target:
+        print("Found")
 
-### Task B — Maximum Window Sum
+    else:
+        print("Not found")
+```
 
-Write a function that returns the maximum sum of a contiguous window of size `k`.
+### Problem with the Original Code
 
-Requirements:
+The problem is that `"Not found"` is printed every time an element does not match the target.
 
-* Validate invalid window sizes.
-* Test empty input and negative numbers.
-* Explain the sliding-window technique.
-* State time and auxiliary space complexity.
+For example, the output is:
 
-### Task C — Debugging
+```text
+Not found
+Not found
+Not found
+```
 
-Correct the loop that prints `"Not found"` for every nonmatching element.
+However, the expected behavior is to print `"Not found"` only once after checking the entire list.
 
-Requirements:
+### Corrected Code – Using for/else
 
-* Use `for/else` or a suitable flag.
-* Explain why the original code was incorrect.
+```python
+numbers = [4, 8, 12]
+target = 7
 
-### Task D — Compare Data Structures
+for number in numbers:
 
-Compare lists, sets, and dictionaries in terms of:
+    if number == target:
+        print("Found")
+        break
 
-* Order
-* Duplicate handling
-* Membership checking
-* Common use cases
+else:
+    print("Not found")
+```
 
-Include one practical backend example for each.
+### Expected Output
 
-### Task E — Reflection
+```text
+Not found
+```
 
-Write a short reflection about:
+### Another Test Case
 
-* My problem-solving approach
-* Test cases I tried
-* Time and space complexity
-* Difficulties I faced
-* What I can improve after feedback
+```python
+numbers = [4, 8, 12]
+target = 8
+
+for number in numbers:
+
+    if number == target:
+        print("Found")
+        break
+
+else:
+    print("Not found")
+```
+
+Expected output:
+
+```text
+Found
+```
+
+### Explanation
+
+Python's `for/else` statement executes the `else` block only when the loop completes without encountering a `break`.
+
+* If the target is found, the loop breaks and prints `"Found"`.
+* If the target is not found, the loop completes and prints `"Not found"` exactly once.
+
+**Conclusion:** Using `for/else` avoids unnecessary repeated messages and makes the searching logic cleaner.
 
 ---
 
-## 10. Testing Checklist
+# Task D – Comparison of Python Data Structures
 
-Before considering a solution complete, I should test different inputs.
+Python provides different data structures for storing and managing data.
 
-* [ ] Empty list
-* [ ] Single-element list
-* [ ] List containing duplicates
-* [ ] List containing only duplicates
-* [ ] Negative numbers
-* [ ] Already sorted input
-* [ ] Target found
-* [ ] Target not found
-* [ ] Window size `k = 1`
-* [ ] Window size equal to the list length
-* [ ] Window size `k = 0`
-* [ ] Negative window size
-* [ ] Window size greater than the list length
+The three commonly used data structures are List, Set, and Dictionary.
+
+### 1. List
+
+A list is an ordered and mutable collection that allows duplicate elements.
+
+Example:
+
+```python
+students = ["Kiran", "Rahul", "Arjun", "Kiran"]
+
+print(students)
+print(students[0])
+```
+
+Output:
+
+```text
+['Kiran', 'Rahul', 'Arjun', 'Kiran']
+Kiran
+```
+
+**Characteristics:**
+
+* Maintains insertion order.
+* Allows duplicate values.
+* Supports indexing and slicing.
+* Mutable.
+* Membership checking takes O(n) time in the general case.
+
+**Backend Example:**
+
+Storing a list of products returned by an API.
+
+```python
+products = [
+    {"id": 1, "name": "Laptop"},
+    {"id": 2, "name": "Mobile"},
+    {"id": 3, "name": "Keyboard"}
+]
+```
+
+### 2. Set
+
+A set is a collection of unique, hashable elements.
+
+Example:
+
+```python
+user_ids = {101, 102, 103, 101}
+
+print(user_ids)
+print(102 in user_ids)
+```
+
+Output:
+
+```text
+{101, 102, 103}
+True
+```
+
+**Characteristics:**
+
+* Does not preserve insertion order as a guaranteed contract.
+* Does not allow duplicate elements.
+* Does not support indexing.
+* Mutable.
+* Membership checking takes O(1) time on average.
+
+**Backend Example:**
+
+Checking whether a user has already registered.
+
+```python
+registered_users = {101, 102, 103}
+
+new_user = 102
+
+if new_user in registered_users:
+    print("User already registered")
+else:
+    registered_users.add(new_user)
+    print("Registration successful")
+```
+
+Output:
+
+```text
+User already registered
+```
+
+### 3. Dictionary
+
+A dictionary stores information in key-value pairs.
+
+Example:
+
+```python
+student = {
+    "id": 101,
+    "name": "Kiran",
+    "course": "Python"
+}
+
+print(student["name"])
+print(student.get("course"))
+```
+
+Output:
+
+```text
+Kiran
+Python
+```
+
+**Characteristics:**
+
+* Maintains insertion order of keys.
+* Stores data in key-value pairs.
+* Keys must be unique and hashable.
+* Values can contain duplicates.
+* Membership checking by key takes O(1) time on average.
+
+**Backend Example:**
+
+Storing user information returned by an API.
+
+```python
+user = {
+    "id": 101,
+    "username": "kiran",
+    "email": "kiran@example.com",
+    "role": "developer"
+}
+
+print(user["username"])
+```
+
+Output:
+
+```text
+kiran
+```
+
+### Comparison Table
+
+| Feature      | List            | Set                   | Dictionary            |
+| ------------ | --------------- | --------------------- | --------------------- |
+| Ordered      | Yes             | No guaranteed order   | Yes                   |
+| Duplicates   | Allowed         | Not allowed           | Keys must be unique   |
+| Indexing     | Supported       | Not supported         | Access using keys     |
+| Mutable      | Yes             | Yes                   | Yes                   |
+| Membership   | O(n)            | O(1) average          | O(1) average for keys |
+| Main Purpose | Store sequences | Store unique elements | Store key-value data  |
+
+### Conclusion
+
+I would choose a list when order and duplicates matter, a set when uniqueness and fast membership checking are important, and a dictionary when data needs to be stored and accessed using keys.
+
+Choosing the correct data structure helps improve application performance and code readability.
 
 ---
 
-## 11. What I Learned Today
+# Task E – Reflection
 
-One thing I understood from today's practice is that choosing the right approach can make a big difference in performance.
+## 1. My Approach
 
-For example, using a set instead of repeatedly searching a list can make duplicate detection much faster. Similarly, the sliding-window technique avoids calculating the same elements repeatedly.
+While solving the problems, I first understood the requirements and identified the expected inputs and outputs.
 
-I also learned that testing edge cases and understanding the time and space complexity are important parts of solving coding problems.
+Then I selected the appropriate data structures and algorithms based on the problem.
 
-I still need to practice more problems to become comfortable with these techniques.
+For duplicate removal, I used a set and a list.
 
-## 👨‍💻 About Me
+For finding the maximum sum of a fixed-size window, I used the Sliding Window technique.
 
-I'm a Computer Science graduate working on improving my Python programming and problem-solving skills as part of my placement preparation.
+For the debugging challenge, I used Python's `for/else` statement to correct the searching logic.
 
-I'm using this repository to keep my learning notes, practice coding problems, and track my progress.
+## 2. Test Cases
 
-Thanks for checking out my repository! 😊
+I tested the solutions with:
 
-**Learning step by step and improving with practice. 🚀**
+* Empty lists.
+* Single-element lists.
+* Duplicate values.
+* Negative numbers.
+* Repeated elements.
+* Invalid window sizes.
+* Targets that exist and do not exist.
+
+## 3. Time and Space Complexity
+
+| Problem            | Time Complexity | Space Complexity |
+| ------------------ | --------------- | ---------------- |
+| Remove duplicates  | O(n) expected   | O(n)             |
+| Maximum window sum | O(n)            | O(1) auxiliary   |
+| Linear search      | O(n)            | O(1)             |
+
+## 4. What I Found Difficult
+
+Initially, understanding how the Sliding Window technique updates the sum without recalculating the entire window was challenging.
+
+Understanding the behavior of Python's `for/else` statement was another interesting part of the debugging exercise.
+
+## 5. What I Learned
+
+Through this assignment, I improved my understanding of:
+
+* Selecting appropriate Python data structures.
+* Using sets for efficient duplicate detection.
+* Maintaining insertion order while removing duplicates.
+* Implementing the Sliding Window algorithm.
+* Debugging loops using `for/else`.
+* Identifying edge cases before writing solutions.
+* Analyzing time and space complexity.
+
+One important takeaway is that choosing the right algorithm and data structure can significantly improve the performance of a program.
+
+---
+
+# Key Takeaways
+
+| Concept          | What I Learned                                     |
+| ---------------- | -------------------------------------------------- |
+| List             | Ordered collection that allows duplicates          |
+| Set              | Stores unique elements                             |
+| Dictionary       | Stores key-value pairs                             |
+| Two Pointers     | Processes sequences using two positions            |
+| Sliding Window   | Efficiently processes contiguous ranges            |
+| for/else         | Executes else when the loop finishes without break |
+| Time Complexity  | Measures how execution time grows                  |
+| Space Complexity | Measures additional memory usage                   |
+
+---
+
+# Technologies Used
+
+* Python 3
+* Python Lists
+* Python Sets
+* Python Dictionaries
+* Two-Pointer Technique
+* Sliding Window Algorithm
+
+---
+
+# Conclusion
+
+This assignment helped me strengthen my Python problem-solving skills and understand how different data structures and algorithms can be used to solve real-world problems.
+
+I implemented duplicate removal, maximum window sum calculation, and debugging solutions while analyzing their time and space complexities.
+
+The main lesson I learned is that writing code is not just about getting the correct output. It is also about choosing an efficient approach, handling edge cases, and writing clean and understandable solutions.
+
+---
+
+**Placement Preparation Series | Day 2**
+
+*Python Problem Solving & Core Data Structures*
+
+**Assignment Submission:** [Submit Day 2 Assignment](https://forms.gle/LNKM4yNXNhy3VJcZ6)
