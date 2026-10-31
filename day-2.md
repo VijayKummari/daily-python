@@ -551,4 +551,3 @@ The main lesson I learned is that writing code is not just about getting the cor
 
 *Python Problem Solving & Core Data Structures*
 
-**Assignment Submission:** [Submit Day 2 Assignment](https://forms.gle/LNKM4yNXNhy3VJcZ6)
